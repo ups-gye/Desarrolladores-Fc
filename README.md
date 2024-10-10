@@ -17,7 +17,10 @@
 # [U2 TALLER](u2_taller/)
 
 Se integró los métodos PUT, DELETE
+
+<div style="text-align: center;">
 <img src="u2_taller/public/img/code.png" alt="imagen" width="400">
+</div>
 
 Se Implementó el frontend (HTML, CSS y JavaScript) para lo solicitado en el punto anterior.
 
