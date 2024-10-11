@@ -19,7 +19,7 @@
 Se integró los métodos PUT, DELETE
 
 <div style="text-align: center;">
-<img src="u2_taller/public/img/code.png" alt="imagen" width="400">
+<img src="u2_taller/public/img/put_delete.png" alt="imagen" width="400">
 </div>
 
 Se Implementó el frontend (HTML, CSS y JavaScript) para lo solicitado en el punto anterior.
