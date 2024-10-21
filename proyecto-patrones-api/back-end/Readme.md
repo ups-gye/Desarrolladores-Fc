@@ -40,13 +40,15 @@
    npm start
    ```
 
-   Al ejecutar el proyecto, se crearán las tablas en la base de datos si todo se configura correctamente.
+   Al ejecutar el proyecto, se crearán las tablas en la base de datos si todo se configura correctamente.s
 
 ## Datos de ejemplo
 
 Por fines prácticos, al iniciar el proyecto se crea un hotel con quince habitaciones y un usuario administrador por defecto. Las credenciales de ese usuario son:
 
 ```javascript
-email: "admin@example.com";
-password: admin123;
+{
+   "email": "admin@example.com",
+   "password": "admin123"
+}
 ```
