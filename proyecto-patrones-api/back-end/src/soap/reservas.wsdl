@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" name="ReservasService" targetNamespace="http://www.example.com/reservas"
+    xmlns:tns="http://www.example.com/reservas"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <!-- Mensajes para Hoteles -->
+    <message name="CrearHotelRequest">
+        <part name="nombre" type="xsd:string"/>
+        <part name="direccion" type="xsd:string"/>
+        <part name="estrellas" type="xsd:int"/>
+    </message>
+    <message name="CrearHotelResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+
+    <message name="ObtenerHotelesRequest"/>
+    <message name="ObtenerHotelesResponse">
+        <part name="hoteles" type="xsd:string"/>
+        <!-- Ajustar el tipo según tu implementación -->
+    </message>
+
+    <message name="ActualizarHotelRequest">
+        <part name="id" type="xsd:int"/>
+        <part name="nombre" type="xsd:string"/>
+        <part name="direccion" type="xsd:string"/>
+        <part name="estrellas" type="xsd:int"/>
+    </message>
+    <message name="ActualizarHotelResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+
+    <message name="EliminarHotelRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="EliminarHotelResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+
+    <!-- Mensajes para Habitaciones -->
+    <message name="CrearHabitacionRequest">
+        <part name="hotelId" type="xsd:int"/>
+        <part name="numero" type="xsd:string"/>
+        <part name="tipo" type="xsd:string"/>
+        <part name="precio" type="xsd:decimal"/>
+        <part name="estado" type="xsd:string"/>
+    </message>
+    <message name="CrearHabitacionResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+
+    <message name="ObtenerHabitacionesRequest">
+        <part name="hotelId" type="xsd:int"/>
+    </message>
+    <message name="ObtenerHabitacionesResponse">
+        <part name="habitaciones" type="xsd:string"/>
+        <!-- Ajustar el tipo según tu implementación -->
+    </message>
+
+    <message name="ActualizarHabitacionRequest">
+        <part name="id" type="xsd:int"/>
+        <part name="hotelId" type="xsd:int"/>
+        <part name="numero" type="xsd:string"/>
+        <part name="tipo" type="xsd:string"/>
+        <part name="precio" type="xsd:decimal"/>
+        <part name="estado" type="xsd:string"/>
+    </message>
+    <message name="ActualizarHabitacionResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+
+    <message name="EliminarHabitacionRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="EliminarHabitacionResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+
+    <message name="ObtenerClientesRequest"/>
+    <message name="ObtenerClientesResponse">
+        <part name="clientes" type="xsd:string"/>
+        <!-- Ajustar el tipo según tu implementación -->
+    </message>
+
+    <message name="ActualizarClienteRequest">
+        <part name="id" type="xsd:int"/>
+        <part name="nombre" type="xsd:string"/>
+        <part name="email" type="xsd:string"/>
+        <part name="telefono" type="xsd:string"/>
+    </message>
+    <message name="ActualizarClienteResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+
+    <message name="EliminarClienteRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="EliminarClienteResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+
+    <!-- Mensajes para Reservas -->
+    <message name="CrearReservaRequest">
+        <part name="habitacionId" type="xsd:int"/>
+        <part name="usuarioId" type="xsd:int"/>
+        <part name="fecha_entrada" type="xsd:string"/>
+        <part name="fecha_salida" type="xsd:string"/>
+    </message>
+    <message name="CrearReservaResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+
+    <message name="ObtenerReservasRequest"/>
+    <message name="ObtenerReservasResponse">
+        <part name="reservas" type="xsd:string"/>
+        <!-- Ajustar el tipo según tu implementación -->
+    </message>
+
+    <message name="ActualizarReservaRequest">
+        <part name="id" type="xsd:int"/>
+        <part name="habitacionId" type="xsd:int"/>
+        <part name="usuarioId" type="xsd:int"/>
+        <part name="fecha_entrada" type="xsd:string"/>
+        <part name="fecha_salida" type="xsd:string"/>
+        <part name="estado" type="xsd:string"/>
+    </message>
+    <message name="ActualizarReservaResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+
+    <message name="EliminarReservaRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="EliminarReservaResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+
+    <!-- Mensajes para Usuarios -->
+    <message name="CrearUsuarioRequest">
+        <part name="nombre" type="xsd:string"/>
+        <part name="email" type="xsd:string"/>
+        <part name="password" type="xsd:string"/>
+    </message>
+    <message name="CrearUsuarioResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+    <message name="ObtenerUsuariosRequest"/>
+    <message name="ObtenerUsuariosResponse">
+        <part name="usuarios" type="xsd:string"/>
+        <!-- Ajustar el tipo según tu implementación -->
+    </message>
+    <message name="ActualizarUsuarioRequest">
+        <part name="id" type="xsd:int"/>
+        <part name="nombre" type="xsd:string"/>
+        <part name="email" type="xsd:string"/>
+        <part name="password" type="xsd:string"/>
+    </message>
+    <message name="ActualizarUsuarioResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
+    <message name="EliminarUsuarioRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+
+    <portType name="ReservasPortType">
+        <!-- Operaciones para Hoteles -->
+        <operation name="CrearHotel">
+            <input message="tns:CrearHotelRequest"/>
+            <output message="tns:CrearHotelResponse"/>
+        </operation>
+        <operation name="ObtenerHoteles">
+            <input message="tns:ObtenerHotelesRequest"/>
+            <output message="tns:ObtenerHotelesResponse"/>
+        </operation>
+        <operation name="ActualizarHotel">
+            <input message="tns:ActualizarHotelRequest"/>
+            <output message="tns:ActualizarHotelResponse"/>
+        </operation>
+        <operation name="EliminarHotel">
+            <input message="tns:EliminarHotelRequest"/>
+            <output message="tns:EliminarHotelResponse"/>
+        </operation>
+
+        <!-- Operaciones para Habitaciones -->
+        <operation name="CrearHabitacion">
+            <input message="tns:CrearHabitacionRequest"/>
+            <output message="tns:CrearHabitacionResponse"/>
+        </operation>
+        <operation name="ObtenerHabitaciones">
+            <input message="tns:ObtenerHabitacionesRequest"/>
+            <output message="tns:ObtenerHabitacionesResponse"/>
+        </operation>
+        <operation name="ActualizarHabitacion">
+            <input message="tns:ActualizarHabitacionRequest"/>
+            <output message="tns:ActualizarHabitacionResponse"/>
+        </operation>
+        <operation name="EliminarHabitacion">
+            <input message="tns:EliminarHabitacionRequest"/>
+            <output message="tns:EliminarHabitacionResponse"/>
+        </operation>
+
+        <!-- Operaciones para usuarios -->
+        <operation name="CrearUsuario">
+            <input message="tns:CrearUsuarioRequest"/>
+            <output message="tns:CrearUsuarioResponse"/>
+        </operation>
+        <operation name="ObtenerUsuarios">
+            <input message="tns:ObtenerUsuariosRequest"/>
+            <output message="tns:ObtenerUsuariosResponse"/>
+        </operation>
+        <operation name="ActualizarUsuario">
+            <input message="tns:ActualizarUsuarioRequest"/>
+            <output message="tns:ActualizarUsuarioResponse"/>
+        </operation>
+        <operation name="EliminarUsuario">
+            <input message="tns:EliminarUsuarioRequest"/>
+            <output message="tns:EliminarUsuarioResponse"/>
+        </operation>
+
+        <!-- Operaciones para Reservas -->
+        <operation name="CrearReserva">
+            <input message="tns:CrearReservaRequest"/>
+            <output message="tns:CrearReservaResponse"/>
+        </operation>
+        <operation name="ObtenerReservas">
+            <input message="tns:ObtenerReservasRequest"/>
+            <output message="tns:ObtenerReservasResponse"/>
+        </operation>
+        <operation name="ActualizarReserva">
+            <input message="tns:ActualizarReservaRequest"/>
+            <output message="tns:ActualizarReservaResponse"/>
+        </operation>
+        <operation name="EliminarReserva">
+            <input message="tns:EliminarReservaRequest"/>
+            <output message="tns:EliminarReservaResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="ReservasBinding" type="tns:ReservasPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <!-- Bindings para Hoteles -->
+        <operation name="CrearHotel">
+            <soap:operation soapAction="http://www.example.com/CrearHotel"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ObtenerHoteles">
+            <soap:operation soapAction="http://www.example.com/ObtenerHoteles"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ActualizarHotel">
+            <soap:operation soapAction="http://www.example.com/ActualizarHotel"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="EliminarHotel">
+            <soap:operation soapAction="http://www.example.com/EliminarHotel"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+
+        <!-- Bindings para Habitaciones -->
+        <operation name="CrearHabitacion">
+            <soap:operation soapAction="http://www.example.com/CrearHabitacion"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ObtenerHabitaciones">
+            <soap:operation soapAction="http://www.example.com/ObtenerHabitaciones"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ActualizarHabitacion">
+            <soap:operation soapAction="http://www.example.com/ActualizarHabitacion"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="EliminarHabitacion">
+            <soap:operation soapAction="http://www.example.com/EliminarHabitacion"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+
+        <!-- Bindings para Reservas -->
+        <operation name="CrearReserva">
+            <soap:operation soapAction="http://www.example.com/CrearReserva"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ObtenerReservas">
+            <soap:operation soapAction="http://www.example.com/ObtenerReservas"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ActualizarReserva">
+            <soap:operation soapAction="http://www.example.com/ActualizarReserva"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="EliminarReserva">
+            <soap:operation soapAction="http://www.example.com/EliminarReserva"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <!-- Bindings para Usuarios -->
+        <operation name="CrearUsuario">
+            <soap:operation soapAction="http://www.example.com/CrearUsuario"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ObtenerUsuarios">
+            <soap:operation soapAction="http://www.example.com/ObtenerUsuarios"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ActualizarUsuario">
+            <soap:operation soapAction="http://www.example.com/ActualizarUsuario"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="EliminarUsuario">
+            <soap:operation soapAction="http://www.example.com/EliminarUsuario"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+
+    </binding>
+
+    <service name="ReservasService">
+        <port name="ReservasPort" binding="tns:ReservasBinding">
+            <soap:address location="http://localhost:5000/reservas"/>
+        </port>
+    </service>
+</definitions>
