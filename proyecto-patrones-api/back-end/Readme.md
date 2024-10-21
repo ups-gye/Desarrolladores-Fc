@@ -47,10 +47,6 @@
 Por fines prácticos, al iniciar el proyecto se crea un hotel con quince habitaciones y un usuario administrador por defecto. Las credenciales de ese usuario son:
 
 ```javascript
-await Usuario.create({
-  nombre: "Administrador",
-  email: "admin@example.com",
-  password: hashedPassword,
-  rol: "admin",
-});
+email: "admin@example.com";
+password: admin123;
 ```
