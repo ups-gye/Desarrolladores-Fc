@@ -52,3 +52,5 @@ Por fines prácticos, al iniciar el proyecto se crea un hotel con quince habitac
    "password": "admin123"
 }
 ```
+
+![imagen](assets/capturas/login.png)
