@@ -25,6 +25,38 @@ const resolvers = {
             }
         },
 
+        // Query para obtener la habitación más cara
+        habitacionMasCara: async (_, { hotelId }) => {
+            try {
+                const habitaciones = await habitacion_service.habitaciones({ hotelId });
+                if (!habitaciones || habitaciones.length === 0) {
+                    throw new Error("No se encontraron habitaciones.");
+                }
+
+                return habitaciones.reduce((max, habitacion) => {
+                    return habitacion.precio > max.precio ? habitacion : max;
+                });
+            } catch (error) {
+                throw new Error(`Error al obtener la habitación más cara: ${error.message}`);
+            }
+        },
+
+        // Query para obtener la habitación más barata
+        habitacionMasBarata: async (_, { hotelId }) => {
+            try {
+                const habitaciones = await habitacion_service.habitaciones({ hotelId });
+                if (!habitaciones || habitaciones.length === 0) {
+                    throw new Error("No se encontraron habitaciones.");
+                }
+
+                return habitaciones.reduce((min, habitacion) => {
+                    return habitacion.precio < min.precio ? habitacion : min;
+                });
+            } catch (error) {
+                throw new Error(`Error al obtener la habitación más barata: ${error.message}`);
+            }
+        },
+
         // Obtener todas las reservas
         reservas: async () => {
             try {
@@ -40,7 +72,51 @@ const resolvers = {
             } catch (error) {
                 throw new Error(`Error al obtener usuarios: ${error.message}`);
             }
-        }
+        },
+
+        // Query para obtener el hotel más popular en base a las estrellas
+        hotelMasPopular: async () => {
+            try {
+                const hoteles = await hotel_service.hoteles();
+                return hoteles.reduce((max, hotel) => hotel.estrellas > max.estrellas ? hotel : max);
+            } catch (error) {
+                throw new Error(`Error al obtener el hotel más popular: ${error.message}`);
+            }
+        },
+
+        // Query para obtener el total de reservas por hotel
+        totalReservasPorHotel: async (_, { hotelId }) => {
+            try {
+                const habitaciones = await habitacion_service.habitaciones({ hotelId });
+                if (!habitaciones || habitaciones.length === 0) {
+                    throw new Error("No se encontraron habitaciones para el hotel con el ID: " + hotelId);
+                }
+
+                const habitacionesIds = habitaciones.map(habitacion => habitacion.id);
+                return await reserva_service.numeroDeReservasRegistradas({ habitacionesIds });
+            } catch (error) {
+                throw new Error(`Error al obtener el total de reservas por hotel: ${error.message}`);
+            }
+        },
+
+        // Query para obtener reservas activas/completadas por usuario
+        reservasPorUsuario: async (_, { usuarioId }) => {
+            try {
+                return await reserva_service.reservasPorUsuario({ usuarioId });
+            } catch (error) {
+                throw new Error(`Error al obtener reservas por usuario: ${error.message}`);
+            }
+        },
+
+        // Query para obtener habitaciones disponibles en un hotel
+        habitacionesDisponibles: async (_, { hotelId }) => {
+            try {
+                const habitaciones = await habitacion_service.habitaciones({ hotelId });
+                return habitaciones.filter(habitacion => habitacion.estado === 'disponible');
+            } catch (error) {
+                throw new Error(`Error al obtener habitaciones disponibles: ${error.message}`);
+            }
+        },
     },
     Mutation: {
         // Crear un nuevo hotel
@@ -198,8 +274,7 @@ const resolvers = {
             } catch (error) {
                 throw new Error(`Error al eliminar el usuario: ${error.message}`);
             }
-        }
-
+        },
     }
 };
 
