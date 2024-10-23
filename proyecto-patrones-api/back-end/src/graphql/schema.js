@@ -3,7 +3,12 @@ const schema = buildSchema(`
     type Hotel {
         id: ID!
         nombre: String!
+        descripcion: String
         direccion: String!
+        pais: String!
+        ciudad: String!
+        telefono: String
+        email: String
         estrellas: Int
     }
 
@@ -19,7 +24,9 @@ const schema = buildSchema(`
     type Usuario {
         id: ID!
         nombre: String!
+        apellido: String!
         email: String!
+        telefono: String
         rol: String
     }
 
@@ -37,6 +44,12 @@ const schema = buildSchema(`
         habitaciones(hotelId: Int!): [Habitacion]
         reservas: [Reserva]
         usuarios: [Usuario]
+        habitacionMasCara(hotelId: Int!): Habitacion
+        habitacionMasBarata(hotelId: Int!): Habitacion
+        hotelMasPopular: Hotel
+        totalReservasPorHotel(hotelId: Int!): Int
+        reservasPorUsuario(usuarioId: Int!): [Reserva]
+        habitacionesDisponibles(hotelId: Int!): [Habitacion]
     }
 
     type Mutation {

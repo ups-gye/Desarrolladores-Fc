@@ -7,6 +7,11 @@
     <!-- Mensajes para Hoteles -->
     <message name="CrearHotelRequest">
         <part name="nombre" type="xsd:string"/>
+        <part name="descripcion" type="xsd:string"/>
+        <part name="pais" type="xsd:string"/>
+        <part name="ciudad" type="xsd:string"/>
+        <part name="telefono" type="xsd:string"/>
+        <part name="email" type="xsd:string"/>
         <part name="direccion" type="xsd:string"/>
         <part name="estrellas" type="xsd:int"/>
     </message>
@@ -138,7 +143,9 @@
     <!-- Mensajes para Usuarios -->
     <message name="CrearUsuarioRequest">
         <part name="nombre" type="xsd:string"/>
+        <part name="apellido" type="xsd:string"/>
         <part name="email" type="xsd:string"/>
+        <part name="telefono" type="xsd:string"/>
         <part name="password" type="xsd:string"/>
     </message>
     <message name="CrearUsuarioResponse">

@@ -10,6 +10,32 @@ const reserva_service = {
         }
     },
 
+    reservasPorUsuario: async ({ usuarioId }) => {
+        try {   
+            const reservas = await Reserva.findAll({
+                where: { usuarioId: usuarioId },
+            });
+            return reservas;
+        } catch (error) {
+            throw new Error(`Error al obtener las reservas por usuario: [${usuarioId}]` + error.message);
+        }
+    },
+
+    numeroDeReservasRegistradas: async ({ habitacionesIds }) => {
+        try {   
+            const reservas = await Reserva.findAll({
+                where: {
+                    habitacionId: habitacionesIds,
+                    estado: 'confirmada',
+                },
+            });
+
+            return reservas?.length || 0;
+        } catch (error) {
+            throw new Error(`Error al obtener las reservas por hotel: [${hotelId}]` + error.message);
+        }
+    },
+
     crearReserva: async ({ habitacionId, usuarioId, fecha_entrada, fecha_salida }) => {
 
         try {

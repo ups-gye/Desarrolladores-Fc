@@ -33,7 +33,13 @@ async function inicializarDatos() {
             // Crear el hotel
             const hotel = await Hotel.create({
                 nombre: 'Hotel Central',
-                direccion: 'Av. Principal 123'
+                descripcion: 'El Hotel Central es un acogedor establecimiento ubicado en el corazón de la ciudad, ideal para viajeros que buscan comodidad y una excelente ubicación.',
+                direccion: 'Av. Principal 123',
+                pais: 'España',
+                ciudad: 'Madrid',
+                telefono: '123-456-789',
+                email: 'hotel@hotel.com',
+                estrellas: 3,
             });
 
             // Crear 15 habitaciones para el hotel
@@ -57,7 +63,9 @@ async function inicializarDatos() {
             const hashedPassword = await bcrypt.hash('admin123', 10); // Contraseña cifrada
             await Usuario.create({
                 nombre: 'Administrador',
+                apellido: 'Admin',
                 email: 'admin@example.com',
+                telefono: '123-456-789',
                 password: hashedPassword,
                 rol: 'admin',
             });
