@@ -8,7 +8,12 @@ export const GET_HOTELES = gql`
         hoteles {
             id
             nombre
+            descripcion
             direccion
+            pais
+            ciudad
+            telefono
+            email
             estrellas
         }
     }
@@ -30,17 +35,52 @@ export const getHoteles = async () => {
     }
 };
 
+// Consulta para obtener un hotel por ID
+export const GET_HOTEL_BY_ID = gql`
+    query GetHotelById($id: Int!) {
+        hotelById(id: $id) {
+            id
+            nombre
+            descripcion
+            direccion
+            pais
+            ciudad
+            telefono
+            email
+            estrellas
+        }
+    }
+`;
+
+export const getHotelById = async (id) => {
+    console.log('hotelId:', id);
+    try {
+        const { data, errors } = await client.query({
+            query: GET_HOTEL_BY_ID,
+            variables: { id },
+        });
+        if (errors) {
+            console.error('Errores en la respuesta:', errors);
+            throw new Error('Errores en la respuesta');
+        }
+        return data.hotelById;
+    } catch (error) {
+        console.error('Error al obtener hotel por ID:', error);
+        throw error;
+    }
+};
+
 // Ejemplo de consulta para obtener el listado de habitaciones
 export const GET_HABITACIONES = gql`
     query GetHabitaciones($hotelId: Int!) {
-        habitaciones(hotelId: $hotelId) {
-            id
-            numero
-            tipo
-            precio
-            estado            
-        }
+    habitaciones(hotelId: $hotelId) {
+        id
+        numero
+        tipo
+        precio
+        estado
     }
+}
 `;
 
 export const getHabitaciones = async (hotelId) => {
@@ -65,12 +105,12 @@ export const getHabitaciones = async (hotelId) => {
 export const GET_RESERVAS = gql`
     query GetReservas {
         reservas {
-            id
-            nombre
-            fecha
-            habitacion
-        }
+        id
+        nombre
+        fecha
+        habitacion
     }
+}
 `;
 
 export const getReservas = async () => {
@@ -88,13 +128,13 @@ export const getReservas = async () => {
 // Ejemplo de mutación
 export const CREATE_RESERVA = gql`
     mutation CreateReserva($nombre: String!, $fecha: String!, $habitacion: Int!) {
-        createReserva(nombre: $nombre, fecha: $fecha, habitacion: $habitacion) {
-            id
-            nombre
-            fecha
-            habitacion
-        }
+    createReserva(nombre: $nombre, fecha: $fecha, habitacion: $habitacion) {
+        id
+        nombre
+        fecha
+        habitacion
     }
+}
 `;
 
 export const createReserva = async (reservaData) => {

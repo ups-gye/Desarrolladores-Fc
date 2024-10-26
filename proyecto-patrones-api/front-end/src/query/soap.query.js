@@ -23,7 +23,111 @@ export const createReserva = async (reservaData) => {
         throw error;
     }
 };
+export const getHabitaciones = async () => {
+    try {
+        const client = await soapClient();
+        const [result] = await client.getHabitacionesAsync({});
+        console.log('Resultado:', result);
+        return result;
+    } catch (error) {
+        console.error('Error al consumir la API SOAP:', error);
+        throw error;
+    }
+};
 
+export const createHabitacion = async (habitacionData) => {
+    try {
+        const client = await soapClient();
+        const [result] = await client.createHabitacionAsync(habitacionData);
+        console.log('Resultado:', result);
+        return result;
+    } catch (error) {
+        console.error('Error al consumir la API SOAP:', error);
+        throw error;
+    }
+};
+
+export const updateHabitacion = async (habitacionData) => {
+    try {
+        const client = await soapClient();
+        const [result] = await client.updateHabitacionAsync(habitacionData);
+        console.log('Resultado:', result);
+        return result;
+    } catch (error) {
+        console.error('Error al consumir la API SOAP:', error);
+        throw error;
+    }
+};
+
+export const deleteHabitacion = async (habitacionId) => {
+    try {
+        const client = await soapClient();
+        const [result] = await client.deleteHabitacionAsync({ id: habitacionId });
+        console.log('Resultado:', result);
+        return result;
+    } catch (error) {
+        console.error('Error al consumir la API SOAP:', error);
+        throw error;
+    }
+};
+
+export const createHotel = async (hotelData) => {
+    try {
+        const client = await soapClient();
+        const [result] = await client.createHotelAsync(hotelData);
+        console.log('Resultado:', result);
+        return result;
+    } catch (error) {
+        console.error('Error al consumir la API SOAP:', error);
+        throw error;
+    }
+};
+
+export const updateHotel = async (hotelData) => {
+    try {
+        const client = await soapClient();
+        const [result] = await client.updateHotelAsync(hotelData);
+        console.log('Resultado:', result);
+        return result;
+    } catch (error) {
+        console.error('Error al consumir la API SOAP:', error);
+        throw error;
+    }
+};
+export const deleteHotel = async (hotelId) => {
+    try {
+        const client = await soapClient();
+        const [result] = await client.deleteHotelAsync({ id: hotelId });
+        console.log('Resultado:', result);
+        return result;
+    } catch (error) {
+        console.error('Error al consumir la API SOAP:', error);
+        throw error;
+    }
+};
+export const getHoteles = async () => {
+    try {
+        const client = await soapClient();
+        const [result] = await client.getHotelesAsync({});
+        console.log('Resultado:', result);
+        return result;
+    } catch (error) {
+        console.error('Error al consumir la API SOAP:', error);
+        throw error;
+    }
+};
+
+export const getHotelById = async (hotelId) => {
+    try {
+        const client = await soapClient();
+        const [result] = await client.getHotelByIdAsync({ id: hotelId });
+        console.log('Resultado:', result);
+        return result;
+    } catch (error) {
+        console.error('Error al consumir la API SOAP:', error);
+        throw error;
+    }
+};
 
 // // exampleUsage.js
 // import { getReservas, createReserva } from './soapQueries';

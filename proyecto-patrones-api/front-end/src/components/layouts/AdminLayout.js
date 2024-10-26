@@ -27,8 +27,11 @@ const AdminLayout = () => {
             >
                 <h2 className="text-2xl font-semibold">Admin Panel</h2>
                 <nav className="mt-4 space-y-2">
-                    <Link to="/dashboard" className="block hover:bg-gray-700 p-2 rounded">Dashboard</Link>
-                    <Link to="/" className="block hover:bg-gray-700 p-2 rounded">Home</Link>
+                    <Link to="/admin" className="block hover:bg-gray-700 p-2 rounded">Home</Link>
+                    {/* <Link to="/hoteles" className="block hover:bg-gray-700 p-2 rounded">Hoteles</Link> */}
+                    <Link to="habitaciones" className="block hover:bg-gray-700 p-2 rounded">Habitaciones</Link>
+                    <Link to="reservas" className="block hover:bg-gray-700 p-2 rounded">Reservas</Link>
+                    <Link to="hotel" className="block hover:bg-gray-700 p-2 rounded">Config</Link>
                 </nav>
                 <button
                     onClick={handleLogoutClick}
@@ -55,7 +58,7 @@ const AdminLayout = () => {
             {/* Main Content */}
             <main className="flex-1">
                 <Navbar toggleSidebar={toggleSidebar} />
-                <div className="p-6">
+                <div className="p-6 overflow-auto h-[calc(100vh-4rem)]">
                     <Outlet />
                 </div>
             </main>

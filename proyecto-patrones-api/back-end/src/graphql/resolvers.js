@@ -11,6 +11,18 @@ const resolvers = {
                 throw new Error(`Error al obtener hoteles: ${error.message}`);
             }
         },
+        // Obtener un hotel por ID
+        hotelById: async (_, { id }) => {
+            if (!id) {
+                throw new Error("El ID del hotel es requerido.");
+            }
+
+            try {
+                return await hotel_service.hotelById(id);
+            } catch (error) {
+                throw new Error(`Error al obtener el hotel por ID: ${error.message}`);
+            }
+        },
 
         // Obtener habitaciones por hotel
         habitaciones: async (_, { hotelId }) => {

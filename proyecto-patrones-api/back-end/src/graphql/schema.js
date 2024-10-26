@@ -41,6 +41,7 @@ const schema = buildSchema(`
 
     type Query {
         hoteles: [Hotel]
+        hotelById(id: Int!): Hotel
         habitaciones(hotelId: Int!): [Habitacion]
         reservas: [Reserva]
         usuarios: [Usuario]

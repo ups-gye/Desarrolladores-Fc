@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getHoteles } from '../query/graphql.query'; // Asegúrate de que la ruta sea correcta
+import { getHoteles } from '../query/graphql.query';
 import ErrorMessage from './error.message';
 
 const HotelList = () => {

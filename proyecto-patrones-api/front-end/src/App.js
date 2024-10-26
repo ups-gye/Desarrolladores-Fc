@@ -5,12 +5,15 @@ import { AuthProvider } from './AuthContext';
 import PrivateRoute from './PrivateRoute';
 import Login from './components/login';
 import Register from './components/register';
-import AdminPage from './pages/AdminPage';
+import AdminPage from './pages/admin/AdminPage';
 import HotelList from './components/hotel-list';
 import HabitacionList from './components/habitacion-list';
 import PublicLayout from './components/layouts/PublicLayout';
 import ClientLayout from './components/layouts/ClientLayout';
 import AdminLayout from './components/layouts/AdminLayout';
+import Habitaciones from './pages/admin/Habitaciones';
+import Reservas from './pages/admin/Reservas';
+import Hotel from './pages/admin/Hotel';
 
 function App() {
   return (
@@ -35,6 +38,9 @@ function App() {
           {/* Rutas para Administradores */}
           <Route path="/admin" element={<PrivateRoute><AdminLayout /></PrivateRoute>}>
             <Route index element={<AdminPage />} />
+            <Route path='habitaciones' element={<Habitaciones />} />
+            <Route path='reservas' element={<Reservas />} />
+            <Route path='hotel' element={<Hotel />} />
           </Route>
 
           {/* Redirección por defecto si no se encuentra la ruta */}
