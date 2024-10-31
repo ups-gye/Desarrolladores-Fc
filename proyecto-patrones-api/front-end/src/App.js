@@ -14,6 +14,7 @@ import AdminLayout from './components/layouts/AdminLayout';
 import Habitaciones from './pages/admin/Habitaciones';
 import Reservas from './pages/admin/Reservas';
 import Hotel from './pages/admin/Hotel';
+import Unauthorized from './pages/system/Unauthorized';
 
 function App() {
   return (
@@ -23,16 +24,16 @@ function App() {
           {/* Ruta de Login y Registro */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-
+          <Route path="/unauthorized" element={<Unauthorized />} />
           {/* Rutas Públicas */}
           <Route path="/" element={<PublicLayout />}>
             <Route index element={<Navigate to="/login" />} />
           </Route>
 
           {/* Rutas para Clientes */}
-          <Route path="/client" element={<PrivateRoute allowedRoles={['client']}><ClientLayout /></PrivateRoute>}>
-            <Route index element={<HotelList />} />
-            <Route path="hoteles/:hotelId/habitaciones" element={<HabitacionList />} />
+          <Route path="/client" element={<PrivateRoute allowedRoles={['cliente']}><ClientLayout /></PrivateRoute>}>
+            <Route index element={<Hotel />} />
+            <Route path="habitaciones" element={<HabitacionList />} />
           </Route>
 
           {/* Rutas para Administradores */}

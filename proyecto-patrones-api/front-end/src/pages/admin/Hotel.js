@@ -4,6 +4,7 @@ import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa'; // Íconos de
 import ErrorMessage from '../../components/error.message';
 import Modal from '../../components/Modal';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../AuthContext';
 
 // Componente para mostrar estrellas
 const StarRating = ({ stars }) => {
@@ -51,6 +52,7 @@ export default function Hotel() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { user } = useAuth(); // Obtener el usuario y la función de login 
     const navigate = useNavigate();
     const backgroundImageUrl = 'https://images.unsplash.com/photo-1529290130-4ca3753253ae?q=80&w=876&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
     useEffect(() => {
@@ -114,13 +116,15 @@ export default function Hotel() {
                             <p><strong>Ciudad:</strong> {hoteles.ciudad}</p>
                             <p><strong>Teléfono:</strong> {hoteles.telefono}</p>
                             <p><strong>Email:</strong> {hoteles.email}</p>
+                            {user && user.rol === 'admin' && (
+                                <button
+                                    onClick={handleOpenModal}
+                                    className="mt-8 bg-blue-600 hover:bg-blue-700 text-white text-base sm:text-lg font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition w-full sm:w-auto"
+                                >
+                                    Editar Datos
+                                </button>
+                            )}
 
-                            <button
-                                onClick={handleOpenModal}
-                                className="mt-8 bg-blue-600 hover:bg-blue-700 text-white text-base sm:text-lg font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition w-full sm:w-auto"
-                            >
-                                Editar Datos
-                            </button>
                         </div>
 
                     </div>

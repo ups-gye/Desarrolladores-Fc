@@ -39,7 +39,6 @@ export const AuthProvider = ({ children }) => {
         try {
             setError(null);
             const response = await login(email, password);
-            console.log('Respuesta de inicio de sesión:', response);
             const { token } = response; // Asumiendo que la respuesta incluye el token
 
             // Verificar y desencriptar el JWT

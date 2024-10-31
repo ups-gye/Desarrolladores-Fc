@@ -6,8 +6,9 @@ const PrivateRoute = ({ children, allowedRoles }) => {
     const { user, loading } = useAuth();
 
     if (loading) return <p>Cargando...</p>;
+    if (!user) return <Navigate to="/login" />;
     if (allowedRoles && !allowedRoles.includes(user.rol)) return <Navigate to="/unauthorized" />
-    return user ? children : <Navigate to="/login" />;
+    return children;
 };
 
 export default PrivateRoute;

@@ -26,7 +26,7 @@ const Navbar = ({ toggleSidebar }) => {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex space-x-4 items-center">
-                    <p className="mt-2 text-lg font-medium">{user ? user.name : 'Guest'}</p><p className='text-white'>{user.nombre}</p>
+                    <p className='text-white'>{`${user.nombre} ${user.apellido}`}</p>
                 </div>
             </div>
 

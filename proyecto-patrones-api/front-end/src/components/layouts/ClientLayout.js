@@ -24,8 +24,10 @@ const ClientLayout = () => {
             >
                 <h2 className="text-2xl font-semibold">Client Panel</h2>
                 <nav className="mt-4 space-y-2">
-                    <Link to="/dashboard" className="block hover:bg-gray-700 p-2 rounded">Dashboard</Link>
                     <Link to="/" className="block hover:bg-gray-700 p-2 rounded">Home</Link>
+                    <Link to="dashboard" className="block hover:bg-gray-700 p-2 rounded">Dashboard</Link>
+                    <Link to="habitaciones" className="block hover:bg-gray-700 p-2 rounded">Habitaciones</Link>
+
                 </nav>
                 {/* Logout Button */}
                 <button

@@ -11,7 +11,6 @@ const Login = () => {
 
     // Redirigir si el usuario ya está autenticado
     useEffect(() => {
-        console.log('Usuario:', user);
         if (user) {
             const redirectPath = user.rol === 'admin' ? '/admin' : '/client';
             navigate(redirectPath);
@@ -32,7 +31,7 @@ const Login = () => {
 
     // Si el usuario ya está autenticado, mostrar un componente Navigate
     if (user) {
-        const redirectPath = user.role === 'admin' ? '/admin' : '/client';
+        const redirectPath = user.rol === 'admin' ? '/admin' : '/client';
         return <Navigate to={redirectPath} />;
     }
 
