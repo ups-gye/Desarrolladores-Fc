@@ -1,17 +1,23 @@
-const { Reserva } = require('../models'); // Importa el modelo Reserva
+const { Reserva, Usuario, Habitacion } = require('../models'); // Importa el modelo Reserva
+
 
 const reserva_service = {
-    reservas: async () => {
+    ObtenerReservas: async () => {
         try {
-            const reservas = await Reserva.findAll();
-            return reservas;
+            const reservas = await Reserva.findAll({
+                include: [
+                    { model: Habitacion, as: 'Habitacion' },
+                    { model: Usuario, as: 'Usuario' }
+                ]
+            });
+            return reservas.map(reserva => reserva.toJSON());
         } catch (error) {
             throw new Error('Error al obtener las reservas: ' + error.message);
         }
     },
 
     reservasPorUsuario: async ({ usuarioId }) => {
-        try {   
+        try {
             const reservas = await Reserva.findAll({
                 where: { usuarioId: usuarioId },
             });
@@ -22,7 +28,7 @@ const reserva_service = {
     },
 
     numeroDeReservasRegistradas: async ({ habitacionesIds }) => {
-        try {   
+        try {
             const reservas = await Reserva.findAll({
                 where: {
                     habitacionId: habitacionesIds,

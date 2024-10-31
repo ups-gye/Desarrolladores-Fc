@@ -18,7 +18,7 @@ const schema = buildSchema(`
         tipo: String!
         precio: Float!
         estado: String!
-        hotel: Hotel
+        Hotel: Hotel
     }
     
     type Usuario {
@@ -26,14 +26,15 @@ const schema = buildSchema(`
         nombre: String!
         apellido: String!
         email: String!
-        telefono: String
-        rol: String
+        telefono: String!
+        password: String!
+        rol: String!
     }
 
     type Reserva {
         id: ID!
-        habitacion: Habitacion
-        usuario: Usuario
+        Habitacion: Habitacion
+        Usuario: Usuario
         fecha_entrada: String!
         fecha_salida: String!
         estado: String!
@@ -63,8 +64,8 @@ const schema = buildSchema(`
         crearHabitacion(numero: String!, tipo: String!, precio: Float!, estado: String!, hotelId: Int!): Habitacion
         actualizarHabitacion(id: Int!, numero: String, tipo: String, precio: Float, estado: String): Habitacion
         eliminarHabitacion(id: Int!): Habitacion
-        crearUsuario(nombre: String!, email: String!, rol: String!): Usuario
-        actualizarUsuario(id: Int!, nombre: String, email: String, rol: String): Usuario
+        crearUsuario(nombre: String!, apellido: String!, email: String!, telefono: String!, password: String!, rol: String!): Usuario
+        actualizarUsuario(id: Int!, nombre: String!, apellido: String!, email: String, telefono: String!, passwords: String!, rol: String!): Usuario
         eliminarUsuario(id: Int!): Usuario        
     }
 `);

@@ -30,13 +30,13 @@ function App() {
           </Route>
 
           {/* Rutas para Clientes */}
-          <Route path="/client" element={<PrivateRoute><ClientLayout /></PrivateRoute>}>
+          <Route path="/client" element={<PrivateRoute allowedRoles={['client']}><ClientLayout /></PrivateRoute>}>
             <Route index element={<HotelList />} />
             <Route path="hoteles/:hotelId/habitaciones" element={<HabitacionList />} />
           </Route>
 
           {/* Rutas para Administradores */}
-          <Route path="/admin" element={<PrivateRoute><AdminLayout /></PrivateRoute>}>
+          <Route path="/admin" element={<PrivateRoute allowedRoles={['admin']}><AdminLayout /></PrivateRoute>}>
             <Route index element={<AdminPage />} />
             <Route path='habitaciones' element={<Habitaciones />} />
             <Route path='reservas' element={<Reservas />} />

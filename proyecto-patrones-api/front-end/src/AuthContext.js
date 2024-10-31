@@ -19,21 +19,21 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    // useEffect(() => {
-    //     const verificarToken = async () => {
-    //         try {
-    //          const savedUser = localStorage.getItem('user');
-    //         //setUser(response.data.usuario);
-    //         } catch (error) {
-    //         console.error('El token ha caducado o es inválido', error);
-    //         handleLogout(); // Cierra sesión si el token es inválido
-    //         } finally {
-    //         setLoading(false);
-    //         }
-    //     };
+    useEffect(() => {
+        const verificarToken = async () => {
+            try {
+                const savedUser = localStorage.getItem('user');
+                setUser(savedUser ? JSON.parse(savedUser) : null);
+            } catch (error) {
+                console.error('El token ha caducado o es inválido', error);
+                handleLogout(); // Cierra sesión si el token es inválido
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    //     verificarToken();
-    // }, []);
+        verificarToken();
+    }, []);
 
     const handleLogin = async (email, password) => {
         try {

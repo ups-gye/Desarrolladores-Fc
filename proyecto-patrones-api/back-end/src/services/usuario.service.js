@@ -1,5 +1,5 @@
 const { Usuario } = require('../models'); // Importa el modelo
-
+const bcrypt = require('bcrypt');
 const usuario_service = {
     // Obtener todos los usuarios
     obtenerUsuarios: async () => {
@@ -12,9 +12,10 @@ const usuario_service = {
     },
 
     // Crear un nuevo usuario
-    crearUsuario: async ({ nombre, email, password, rol }) => {
+    crearUsuario: async ({ nombre, apellido, email, telefono, password, rol }) => {
         try {
-            const usuario = await Usuario.create({ nombre, email, password, rol });
+            const hashedPassword = await bcrypt.hash(password, 10); // Contraseña cifrada
+            const usuario = await Usuario.create({ nombre: nombre, apellido: apellido, email: email, telefono: telefono, password: hashedPassword, rol: rol });
             return usuario;
         } catch (error) {
             throw new Error(`Error al crear el usuario: ${error.message}`);
@@ -22,10 +23,11 @@ const usuario_service = {
     },
 
     // Actualizar un usuario existente
-    actualizarUsuario: async ({ id, nombre, email, password, rol }) => {
+    actualizarUsuario: async ({ id, nombre, apellido, email, telefono, password, rol }) => {
         try {
+            const hashedPassword = await bcrypt.hash(password, 10); // Contraseña cifrada
             const [updated] = await Usuario.update(
-                { nombre, email, password, rol },
+                { nombre: nombre, apellido: apellido, email: email, telefono: telefono, password: hashedPassword, rol: rol },
                 { where: { id } }
             );
 
@@ -33,7 +35,7 @@ const usuario_service = {
                 throw new Error(`No se encontró el usuario con id: ${id}`);
             }
 
-            return { id, nombre, email, password, rol };
+            return { id, nombre, apellido, email, telefono, password, rol };
         } catch (error) {
             throw new Error(`Error al actualizar el usuario: ${error.message}`);
         }

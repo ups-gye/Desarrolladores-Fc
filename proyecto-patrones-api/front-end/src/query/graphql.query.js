@@ -103,14 +103,30 @@ export const getHabitaciones = async (hotelId) => {
 };
 // Ejemplo de consulta
 export const GET_RESERVAS = gql`
-    query GetReservas {
+    query Reservas {
         reservas {
-        id
-        nombre
-        fecha
-        habitacion
+            id
+            Habitacion {
+            id
+            numero
+            tipo
+            precio
+            estado
+            }
+            Usuario {
+            id
+            nombre
+            apellido
+            email
+            telefono
+            password
+            rol
+            }
+            fecha_entrada
+            fecha_salida
+            estado
+        }
     }
-}
 `;
 
 export const getReservas = async () => {
@@ -118,6 +134,7 @@ export const getReservas = async () => {
         const { data } = await client.query({
             query: GET_RESERVAS,
         });
+        console.log('Data:', data);
         return data.reservas;
     } catch (error) {
         console.error('Error al obtener reservas:', error);

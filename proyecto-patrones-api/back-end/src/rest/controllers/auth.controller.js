@@ -62,7 +62,7 @@ async function loginUsuario(req, res) {
 // logout de usuario
 async function logoutUsuario(req, res) {
     try {
-        es.clearCookie('token'); // Eliminar cookie del token
+        res.clearCookie('token'); // Eliminar cookie del token
         res.json({ mensaje: 'Sesión cerrada exitosamente' });
     } catch (error) {
         res.status(500).json({ mensaje: 'Error en el login', error: error.message });

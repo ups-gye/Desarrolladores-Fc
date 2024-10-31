@@ -22,7 +22,6 @@
     <message name="ObtenerHotelesRequest"/>
     <message name="ObtenerHotelesResponse">
         <part name="hoteles" type="xsd:string"/>
-        <!-- Ajustar el tipo según tu implementación -->
     </message>
 
     <message name="ActualizarHotelRequest">
@@ -44,31 +43,27 @@
 
     <!-- Mensajes para Habitaciones -->
     <message name="CrearHabitacionRequest">
-        <part name="hotelId" type="xsd:int"/>
+        <part name="hotel_id" type="xsd:int"/>
         <part name="numero" type="xsd:string"/>
         <part name="tipo" type="xsd:string"/>
-        <part name="precio" type="xsd:decimal"/>
-        <part name="estado" type="xsd:string"/>
+        <part name="precio" type="xsd:float"/>
     </message>
     <message name="CrearHabitacionResponse">
         <part name="confirmation" type="xsd:string"/>
     </message>
 
     <message name="ObtenerHabitacionesRequest">
-        <part name="hotelId" type="xsd:int"/>
+        <part name="hotel_id" type="xsd:int"/>
     </message>
     <message name="ObtenerHabitacionesResponse">
         <part name="habitaciones" type="xsd:string"/>
-        <!-- Ajustar el tipo según tu implementación -->
     </message>
 
     <message name="ActualizarHabitacionRequest">
         <part name="id" type="xsd:int"/>
-        <part name="hotelId" type="xsd:int"/>
         <part name="numero" type="xsd:string"/>
         <part name="tipo" type="xsd:string"/>
-        <part name="precio" type="xsd:decimal"/>
-        <part name="estado" type="xsd:string"/>
+        <part name="precio" type="xsd:float"/>
     </message>
     <message name="ActualizarHabitacionResponse">
         <part name="confirmation" type="xsd:string"/>
@@ -81,35 +76,12 @@
         <part name="confirmation" type="xsd:string"/>
     </message>
 
-    <message name="ObtenerClientesRequest"/>
-    <message name="ObtenerClientesResponse">
-        <part name="clientes" type="xsd:string"/>
-        <!-- Ajustar el tipo según tu implementación -->
-    </message>
-
-    <message name="ActualizarClienteRequest">
-        <part name="id" type="xsd:int"/>
-        <part name="nombre" type="xsd:string"/>
-        <part name="email" type="xsd:string"/>
-        <part name="telefono" type="xsd:string"/>
-    </message>
-    <message name="ActualizarClienteResponse">
-        <part name="confirmation" type="xsd:string"/>
-    </message>
-
-    <message name="EliminarClienteRequest">
-        <part name="id" type="xsd:int"/>
-    </message>
-    <message name="EliminarClienteResponse">
-        <part name="confirmation" type="xsd:string"/>
-    </message>
-
     <!-- Mensajes para Reservas -->
     <message name="CrearReservaRequest">
-        <part name="habitacionId" type="xsd:int"/>
-        <part name="usuarioId" type="xsd:int"/>
-        <part name="fecha_entrada" type="xsd:string"/>
-        <part name="fecha_salida" type="xsd:string"/>
+        <part name="usuario_id" type="xsd:int"/>
+        <part name="habitacion_id" type="xsd:int"/>
+        <part name="fecha_inicio" type="xsd:string"/>
+        <part name="fecha_fin" type="xsd:string"/>
     </message>
     <message name="CrearReservaResponse">
         <part name="confirmation" type="xsd:string"/>
@@ -118,16 +90,12 @@
     <message name="ObtenerReservasRequest"/>
     <message name="ObtenerReservasResponse">
         <part name="reservas" type="xsd:string"/>
-        <!-- Ajustar el tipo según tu implementación -->
     </message>
 
     <message name="ActualizarReservaRequest">
         <part name="id" type="xsd:int"/>
-        <part name="habitacionId" type="xsd:int"/>
-        <part name="usuarioId" type="xsd:int"/>
-        <part name="fecha_entrada" type="xsd:string"/>
-        <part name="fecha_salida" type="xsd:string"/>
-        <part name="estado" type="xsd:string"/>
+        <part name="fecha_inicio" type="xsd:string"/>
+        <part name="fecha_fin" type="xsd:string"/>
     </message>
     <message name="ActualizarReservaResponse">
         <part name="confirmation" type="xsd:string"/>
@@ -143,34 +111,36 @@
     <!-- Mensajes para Usuarios -->
     <message name="CrearUsuarioRequest">
         <part name="nombre" type="xsd:string"/>
-        <part name="apellido" type="xsd:string"/>
         <part name="email" type="xsd:string"/>
-        <part name="telefono" type="xsd:string"/>
         <part name="password" type="xsd:string"/>
     </message>
     <message name="CrearUsuarioResponse">
         <part name="confirmation" type="xsd:string"/>
     </message>
+
     <message name="ObtenerUsuariosRequest"/>
     <message name="ObtenerUsuariosResponse">
         <part name="usuarios" type="xsd:string"/>
-        <!-- Ajustar el tipo según tu implementación -->
     </message>
+
     <message name="ActualizarUsuarioRequest">
         <part name="id" type="xsd:int"/>
         <part name="nombre" type="xsd:string"/>
         <part name="email" type="xsd:string"/>
-        <part name="password" type="xsd:string"/>
     </message>
     <message name="ActualizarUsuarioResponse">
         <part name="confirmation" type="xsd:string"/>
     </message>
+
     <message name="EliminarUsuarioRequest">
         <part name="id" type="xsd:int"/>
     </message>
+    <message name="EliminarUsuarioResponse">
+        <part name="confirmation" type="xsd:string"/>
+    </message>
 
+    <!-- Port Type -->
     <portType name="ReservasPortType">
-        <!-- Operaciones para Hoteles -->
         <operation name="CrearHotel">
             <input message="tns:CrearHotelRequest"/>
             <output message="tns:CrearHotelResponse"/>
@@ -187,8 +157,6 @@
             <input message="tns:EliminarHotelRequest"/>
             <output message="tns:EliminarHotelResponse"/>
         </operation>
-
-        <!-- Operaciones para Habitaciones -->
         <operation name="CrearHabitacion">
             <input message="tns:CrearHabitacionRequest"/>
             <output message="tns:CrearHabitacionResponse"/>
@@ -205,26 +173,6 @@
             <input message="tns:EliminarHabitacionRequest"/>
             <output message="tns:EliminarHabitacionResponse"/>
         </operation>
-
-        <!-- Operaciones para usuarios -->
-        <operation name="CrearUsuario">
-            <input message="tns:CrearUsuarioRequest"/>
-            <output message="tns:CrearUsuarioResponse"/>
-        </operation>
-        <operation name="ObtenerUsuarios">
-            <input message="tns:ObtenerUsuariosRequest"/>
-            <output message="tns:ObtenerUsuariosResponse"/>
-        </operation>
-        <operation name="ActualizarUsuario">
-            <input message="tns:ActualizarUsuarioRequest"/>
-            <output message="tns:ActualizarUsuarioResponse"/>
-        </operation>
-        <operation name="EliminarUsuario">
-            <input message="tns:EliminarUsuarioRequest"/>
-            <output message="tns:EliminarUsuarioResponse"/>
-        </operation>
-
-        <!-- Operaciones para Reservas -->
         <operation name="CrearReserva">
             <input message="tns:CrearReservaRequest"/>
             <output message="tns:CrearReservaResponse"/>
@@ -241,13 +189,29 @@
             <input message="tns:EliminarReservaRequest"/>
             <output message="tns:EliminarReservaResponse"/>
         </operation>
+        <operation name="CrearUsuario">
+            <input message="tns:CrearUsuarioRequest"/>
+            <output message="tns:CrearUsuarioResponse"/>
+        </operation>
+        <operation name="ObtenerUsuarios">
+            <input message="tns:ObtenerUsuariosRequest"/>
+            <output message="tns:ObtenerUsuariosResponse"/>
+        </operation>
+        <operation name="ActualizarUsuario">
+            <input message="tns:ActualizarUsuarioRequest"/>
+            <output message="tns:ActualizarUsuarioResponse"/>
+        </operation>
+        <operation name="EliminarUsuario">
+            <input message="tns:EliminarUsuarioRequest"/>
+            <output message="tns:EliminarUsuarioResponse"/>
+        </operation>
     </portType>
 
+    <!-- Binding -->
     <binding name="ReservasBinding" type="tns:ReservasPortType">
         <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
-        <!-- Bindings para Hoteles -->
         <operation name="CrearHotel">
-            <soap:operation soapAction="http://www.example.com/CrearHotel"/>
+            <soap:operation soapAction="http://www.example.com/reservas/CrearHotel"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -256,7 +220,7 @@
             </output>
         </operation>
         <operation name="ObtenerHoteles">
-            <soap:operation soapAction="http://www.example.com/ObtenerHoteles"/>
+            <soap:operation soapAction="http://www.example.com/reservas/ObtenerHoteles"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -265,7 +229,7 @@
             </output>
         </operation>
         <operation name="ActualizarHotel">
-            <soap:operation soapAction="http://www.example.com/ActualizarHotel"/>
+            <soap:operation soapAction="http://www.example.com/reservas/ActualizarHotel"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -274,7 +238,7 @@
             </output>
         </operation>
         <operation name="EliminarHotel">
-            <soap:operation soapAction="http://www.example.com/EliminarHotel"/>
+            <soap:operation soapAction="http://www.example.com/reservas/EliminarHotel"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -282,10 +246,8 @@
                 <soap:body use="literal"/>
             </output>
         </operation>
-
-        <!-- Bindings para Habitaciones -->
         <operation name="CrearHabitacion">
-            <soap:operation soapAction="http://www.example.com/CrearHabitacion"/>
+            <soap:operation soapAction="http://www.example.com/reservas/CrearHabitacion"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -294,7 +256,7 @@
             </output>
         </operation>
         <operation name="ObtenerHabitaciones">
-            <soap:operation soapAction="http://www.example.com/ObtenerHabitaciones"/>
+            <soap:operation soapAction="http://www.example.com/reservas/ObtenerHabitaciones"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -303,7 +265,7 @@
             </output>
         </operation>
         <operation name="ActualizarHabitacion">
-            <soap:operation soapAction="http://www.example.com/ActualizarHabitacion"/>
+            <soap:operation soapAction="http://www.example.com/reservas/ActualizarHabitacion"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -312,7 +274,7 @@
             </output>
         </operation>
         <operation name="EliminarHabitacion">
-            <soap:operation soapAction="http://www.example.com/EliminarHabitacion"/>
+            <soap:operation soapAction="http://www.example.com/reservas/EliminarHabitacion"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -320,10 +282,8 @@
                 <soap:body use="literal"/>
             </output>
         </operation>
-
-        <!-- Bindings para Reservas -->
         <operation name="CrearReserva">
-            <soap:operation soapAction="http://www.example.com/CrearReserva"/>
+            <soap:operation soapAction="http://www.example.com/reservas/CrearReserva"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -332,7 +292,7 @@
             </output>
         </operation>
         <operation name="ObtenerReservas">
-            <soap:operation soapAction="http://www.example.com/ObtenerReservas"/>
+            <soap:operation soapAction="http://www.example.com/reservas/ObtenerReservas"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -341,7 +301,7 @@
             </output>
         </operation>
         <operation name="ActualizarReserva">
-            <soap:operation soapAction="http://www.example.com/ActualizarReserva"/>
+            <soap:operation soapAction="http://www.example.com/reservas/ActualizarReserva"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -350,7 +310,7 @@
             </output>
         </operation>
         <operation name="EliminarReserva">
-            <soap:operation soapAction="http://www.example.com/EliminarReserva"/>
+            <soap:operation soapAction="http://www.example.com/reservas/EliminarReserva"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -358,9 +318,8 @@
                 <soap:body use="literal"/>
             </output>
         </operation>
-        <!-- Bindings para Usuarios -->
         <operation name="CrearUsuario">
-            <soap:operation soapAction="http://www.example.com/CrearUsuario"/>
+            <soap:operation soapAction="http://www.example.com/reservas/CrearUsuario"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -369,7 +328,7 @@
             </output>
         </operation>
         <operation name="ObtenerUsuarios">
-            <soap:operation soapAction="http://www.example.com/ObtenerUsuarios"/>
+            <soap:operation soapAction="http://www.example.com/reservas/ObtenerUsuarios"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -378,7 +337,7 @@
             </output>
         </operation>
         <operation name="ActualizarUsuario">
-            <soap:operation soapAction="http://www.example.com/ActualizarUsuario"/>
+            <soap:operation soapAction="http://www.example.com/reservas/ActualizarUsuario"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -387,7 +346,7 @@
             </output>
         </operation>
         <operation name="EliminarUsuario">
-            <soap:operation soapAction="http://www.example.com/EliminarUsuario"/>
+            <soap:operation soapAction="http://www.example.com/reservas/EliminarUsuario"/>
             <input>
                 <soap:body use="literal"/>
             </input>
@@ -395,9 +354,9 @@
                 <soap:body use="literal"/>
             </output>
         </operation>
-
     </binding>
 
+    <!-- Service -->
     <service name="ReservasService">
         <port name="ReservasPort" binding="tns:ReservasBinding">
             <soap:address location="http://localhost:5000/reservas"/>

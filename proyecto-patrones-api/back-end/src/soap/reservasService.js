@@ -13,7 +13,7 @@ const service = {
                     });
             },
             ObtenerHoteles() {
-                return hotel_service.obtenerHoteles()
+                return hotel_service.hoteles()
                     .then(confirmation => {
                         return { confirmation };
                     }).catch(err => {
@@ -80,9 +80,9 @@ const service = {
                     });
             },
             ObtenerReservas() {
-                return reserva_service.obtenerReservas()
-                    .then(confirmation => {
-                        return { confirmation };
+                return reserva_service.ObtenerReservas()
+                    .then(reservas => {
+                        return { reservas };
                     }).catch(err => {
                         throw new Error(err.message);
                     });

@@ -11,8 +11,9 @@ const Login = () => {
 
     // Redirigir si el usuario ya está autenticado
     useEffect(() => {
+        console.log('Usuario:', user);
         if (user) {
-            const redirectPath = user.role === 'admin' ? '/admin' : '/client';
+            const redirectPath = user.rol === 'admin' ? '/admin' : '/client';
             navigate(redirectPath);
         }
     }, [navigate, user]); // Dependencias 

@@ -1,11 +1,15 @@
-import soapClient from '../utils/soap.client';
+import { soapClient } from '../utils/soap.client';
 
 export const getReservas = async () => {
     try {
-        const client = await soapClient();
-        const [result] = await client.getReservasAsync({});
-        console.log('Resultado:', result);
-        return result;
+        const soapAction = 'ObtenerReservas';
+        const soapBody = `
+            <res:ObtenerReservas/>
+        `;
+
+        // Llama al cliente SOAP y obtiene el resultado en JSON
+        const resultJson = await soapClient(soapAction, soapBody);
+        return resultJson;
     } catch (error) {
         console.error('Error al consumir la API SOAP:', error);
         throw error;

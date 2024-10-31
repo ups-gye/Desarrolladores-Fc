@@ -92,7 +92,7 @@ export function StatusPill({ value }) {
         <span
             className={classNames(
                 "px-3 py-1 uppercase leading-wide font-bold text-xs rounded-full shadow-sm",
-                status.startsWith("activo") ? "bg-green-100 text-green-800" : null,
+                status.startsWith("confirmada") ? "bg-green-100 text-green-800" : null,
                 status.startsWith("inactivo") ? "bg-yellow-100 text-yellow-800" : null,
                 status.startsWith("Caducado") ? "bg-green-100 text-red-800" : null,
                 status.startsWith("Pendiente activar admin") ? "bg-yellow-100 text-red-800" : null,
@@ -255,24 +255,24 @@ function Table({
                             >
                                 Nuevo
                             </button>
-                            {/* {selectedFlatRows.length === 1 && (
-                <button
-                  type="button"
-                  className="inline-flex w-full justify-center rounded-md bg-[#3F667D] px-3 py-2 text-sm font-semibold text-white  hover:bg-[#2B5772] sm:ml-3 sm:w-auto"
-                  onClick={onEditClick}
-                >
-                  Editar
-                </button>
-              )} */}
-                            {/* {selectedFlatRows.length > 0 && (
-                <button
-                  type="button"
-                  className="inline-flex w-full justify-center rounded-md bg-[#3F667D] px-3 py-2 text-sm font-semibold text-white  hover:bg-[#2B5772] sm:ml-3 sm:w-auto"
-                  onClick={onRemoveClick}
-                >
-                  Eliminar
-                </button>
-              )} */}
+                            {selectedFlatRows.length === 1 && (
+                                <button
+                                    type="button"
+                                    className="inline-flex w-full justify-center rounded-md bg-[#3F667D] px-3 py-2 text-sm font-semibold text-white  hover:bg-[#2B5772] sm:ml-3 sm:w-auto"
+                                    onClick={onEditClick}
+                                >
+                                    Editar
+                                </button>
+                            )}
+                            {selectedFlatRows.length > 0 && (
+                                <button
+                                    type="button"
+                                    className="inline-flex w-full justify-center rounded-md bg-[#3F667D] px-3 py-2 text-sm font-semibold text-white  hover:bg-[#2B5772] sm:ml-3 sm:w-auto"
+                                    onClick={onRemoveClick}
+                                >
+                                    Eliminar
+                                </button>
+                            )}
                         </>
                     )}
                 </div>
