@@ -1,9 +1,9 @@
 // src/components/ClientPage.js
 import React from 'react';
-import { useAuth } from '../AuthContext'; // Asegúrate de importar el contexto de autenticación
+import { useAuth } from '../../AuthContext'; // Asegúrate de importar el contexto de autenticación
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate para la redirección
-import Navbar from '../components/navbar';
-import HotelList from '../components/hotel-list';
+import Navbar from '../../components/navbar';
+import HotelList from '../../components/hotel-list';
 
 const ClientPage = () => {
     const { handleLogout, user } = useAuth(); // Obtén la función de cerrar sesión

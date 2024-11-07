@@ -1,12 +1,48 @@
-const { Reserva } = require('../models'); // Importa el modelo Reserva
+const { Reserva, Usuario, Habitacion } = require('../models'); // Importa el modelo Reserva
+
 
 const reserva_service = {
-    reservas: async () => {
+    ObtenerReservas: async () => {
         try {
-            const reservas = await Reserva.findAll();
-            return reservas;
+            const reservas = await Reserva.findAll({
+                include: [
+                    { model: Habitacion, as: 'Habitacion' },
+                    { model: Usuario, as: 'Usuario' }
+                ]
+            });
+            return reservas.map(reserva => reserva.toJSON());
         } catch (error) {
             throw new Error('Error al obtener las reservas: ' + error.message);
+        }
+    },
+
+    reservasPorUsuario: async ({ usuarioId }) => {
+        try {
+            const reservas = await Reserva.findAll({
+                where: { usuarioId: usuarioId },
+                include: [
+                    { model: Habitacion, as: 'Habitacion' },
+                    { model: Usuario, as: 'Usuario' }
+                ]
+            });
+            return reservas;
+        } catch (error) {
+            throw new Error(`Error al obtener las reservas por usuario: [${usuarioId}]` + error.message);
+        }
+    },
+
+    numeroDeReservasRegistradas: async ({ habitacionesIds }) => {
+        try {
+            const reservas = await Reserva.findAll({
+                where: {
+                    habitacionId: habitacionesIds,
+                    estado: 'confirmada',
+                },
+            });
+
+            return reservas?.length || 0;
+        } catch (error) {
+            throw new Error(`Error al obtener las reservas por hotel: [${hotelId}]` + error.message);
         }
     },
 
@@ -20,6 +56,11 @@ const reserva_service = {
                 fecha_salida,
                 estado: 'confirmada',
             });
+
+            const habitacion = await Habitacion.findByPk(habitacionId);
+            if (!habitacion) throw new Error('Habitacion no encontrada');
+
+            await habitacion.update({ estado: 'reservada' });
             return reserva;
         } catch (error) {
             throw new Error('Error al crear la reserva: ' + error.message);

@@ -9,6 +9,15 @@ const hotel_service = {
             throw new Error('Error al obtener los hoteles: ' + error.message);
         }
     },
+    hotelById: async (id) => {
+        try {
+            const hotel = await Hotel.findByPk(id);
+            if (!hotel) throw new Error('Hotel no encontrado');
+            return hotel;
+        } catch (error) {
+            throw new Error('Error al obtener el hotel: ' + error.message);
+        }
+    },
 
     crearHotel: async ({ nombre, direccion, estrellas }) => {
         try {

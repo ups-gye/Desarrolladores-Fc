@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext'; // Asegúrate de importar useAuth correctamente
+import { useAuth } from '../../AuthContext'; // Asegúrate de importar useAuth correctamente
 
 const Login = () => {
     const { user, handleLogin, error } = useAuth(); // Obtener el usuario y la función de login
@@ -12,16 +12,16 @@ const Login = () => {
     // Redirigir si el usuario ya está autenticado
     useEffect(() => {
         if (user) {
-            const redirectPath = user.role === 'admin' ? '/admin' : '/client';
+            const redirectPath = user.rol === 'admin' ? '/admin' : '/client';
             navigate(redirectPath);
         }
     }, [navigate, user]); // Dependencias 
 
-    // useEffect(() => {
-    //     if (error) {
-    //         console.error('Error de inicio de sesión:', error);
-    //     }
-    // }, [error]);
+    useEffect(() => {
+        if (error) {
+            console.error('Error de inicio de sesión:', error);
+        }
+    }, [error]);
 
     // Manejar el submit del formulario
     const handleSubmit = async (e) => {
@@ -31,7 +31,7 @@ const Login = () => {
 
     // Si el usuario ya está autenticado, mostrar un componente Navigate
     if (user) {
-        const redirectPath = user.role === 'admin' ? '/admin' : '/client';
+        const redirectPath = user.rol === 'admin' ? '/admin' : '/client';
         return <Navigate to={redirectPath} />;
     }
 
@@ -61,6 +61,10 @@ const Login = () => {
                     Login
                 </button>
                 {error && <p className="mt-4 text-red-500">{error}</p>}
+
+                <p className="mt-4 text-center">
+                    ¿No tienes una cuenta? <a href="/register" className="text-blue-500 hover:underline">Regístrate</a>
+                </p>
             </form>
         </div>
     );

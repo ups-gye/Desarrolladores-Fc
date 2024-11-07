@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { getHabitaciones } from '../query/graphql.query'; // Asegúrate de que la ruta sea correcta
 import ErrorMessage from './error.message';
 
 const HabitacionList = () => {
-    const { hotelId } = useParams();
+    // const { hotelId } = useParams();
+    const hotelId = 1;
     const [habitaciones, setHabitaciones] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -68,8 +69,8 @@ const HabitacionList = () => {
                                     </p>
                                     <p
                                         className={`text-sm font-medium mt-2 ${habitacion.estado === 'disponible'
-                                                ? 'text-green-600'
-                                                : 'text-red-600'
+                                            ? 'text-green-600'
+                                            : 'text-red-600'
                                             }`}
                                     >
                                         Estado: {habitacion.estado}

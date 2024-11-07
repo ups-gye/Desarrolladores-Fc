@@ -6,6 +6,10 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        apellido: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -13,6 +17,10 @@ module.exports = (sequelize) => {
             validate: {
                 isEmail: true,
             },
+        },
+        telefono: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         password: {
             type: DataTypes.STRING,

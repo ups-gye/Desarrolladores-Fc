@@ -26,7 +26,10 @@ const Navbar = ({ toggleSidebar }) => {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex space-x-4 items-center">
-                    <p className="mt-2 text-lg font-medium">{user ? user.name : 'Guest'}</p><p className='text-white'>{user.nombre}</p>
+                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M5.121 17.804A9.953 9.953 0 0112 15c2.21 0 4.21.722 5.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 2a10 10 0 100 20 10 10 0 000-20z" />
+                    </svg>
+                    <p className='text-white'>{`${user.nombre} ${user.apellido}`}</p>
                 </div>
             </div>
 

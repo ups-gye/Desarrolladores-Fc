@@ -3,7 +3,12 @@ const schema = buildSchema(`
     type Hotel {
         id: ID!
         nombre: String!
+        descripcion: String
         direccion: String!
+        pais: String!
+        ciudad: String!
+        telefono: String
+        email: String
         estrellas: Int
     }
 
@@ -13,20 +18,23 @@ const schema = buildSchema(`
         tipo: String!
         precio: Float!
         estado: String!
-        hotel: Hotel
+        Hotel: Hotel
     }
     
     type Usuario {
         id: ID!
         nombre: String!
+        apellido: String!
         email: String!
-        rol: String
+        telefono: String!
+        password: String!
+        rol: String!
     }
 
     type Reserva {
         id: ID!
-        habitacion: Habitacion
-        usuario: Usuario
+        Habitacion: Habitacion
+        Usuario: Usuario
         fecha_entrada: String!
         fecha_salida: String!
         estado: String!
@@ -34,9 +42,16 @@ const schema = buildSchema(`
 
     type Query {
         hoteles: [Hotel]
+        hotelById(id: Int!): Hotel
         habitaciones(hotelId: Int!): [Habitacion]
         reservas: [Reserva]
         usuarios: [Usuario]
+        habitacionMasCara(hotelId: Int!): Habitacion
+        habitacionMasBarata(hotelId: Int!): Habitacion
+        hotelMasPopular: Hotel
+        totalReservasPorHotel(hotelId: Int!): Int
+        reservasPorUsuario(usuarioId: Int!): [Reserva]
+        habitacionesDisponibles(hotelId: Int!): [Habitacion]
     }
 
     type Mutation {
@@ -46,11 +61,11 @@ const schema = buildSchema(`
         crearHotel(nombre: String!, direccion: String!, estrellas: Int!): Hotel
         actualizarHotel(id: Int!, nombre: String, direccion: String, estrellas: Int): Hotel
         eliminarHotel(id: Int!): Hotel
-        crearHabitacion(numero: String!, tipo: String!, precio: Float!, estado: String!, hotelId: Int!): Habitacion
+        crearHabitacion(numero: String!, tipo: String!, precio: Float!, estado: String!, hotel_id: Int!): Habitacion
         actualizarHabitacion(id: Int!, numero: String, tipo: String, precio: Float, estado: String): Habitacion
         eliminarHabitacion(id: Int!): Habitacion
-        crearUsuario(nombre: String!, email: String!, rol: String!): Usuario
-        actualizarUsuario(id: Int!, nombre: String, email: String, rol: String): Usuario
+        crearUsuario(nombre: String!, apellido: String!, email: String!, telefono: String!, password: String!, rol: String!): Usuario
+        actualizarUsuario(id: Int!, nombre: String!, apellido: String!, email: String, telefono: String!, passwords: String!, rol: String!): Usuario
         eliminarUsuario(id: Int!): Usuario        
     }
 `);

@@ -11,6 +11,18 @@ const resolvers = {
                 throw new Error(`Error al obtener hoteles: ${error.message}`);
             }
         },
+        // Obtener un hotel por ID
+        hotelById: async (_, { id }) => {
+            if (!id) {
+                throw new Error("El ID del hotel es requerido.");
+            }
+
+            try {
+                return await hotel_service.hotelById(id);
+            } catch (error) {
+                throw new Error(`Error al obtener el hotel por ID: ${error.message}`);
+            }
+        },
 
         // Obtener habitaciones por hotel
         habitaciones: async (_, { hotelId }) => {
@@ -25,10 +37,42 @@ const resolvers = {
             }
         },
 
+        // Query para obtener la habitación más cara
+        habitacionMasCara: async (_, { hotelId }) => {
+            try {
+                const habitaciones = await habitacion_service.habitaciones({ hotelId });
+                if (!habitaciones || habitaciones.length === 0) {
+                    throw new Error("No se encontraron habitaciones.");
+                }
+
+                return habitaciones.reduce((max, habitacion) => {
+                    return habitacion.precio > max.precio ? habitacion : max;
+                });
+            } catch (error) {
+                throw new Error(`Error al obtener la habitación más cara: ${error.message}`);
+            }
+        },
+
+        // Query para obtener la habitación más barata
+        habitacionMasBarata: async (_, { hotelId }) => {
+            try {
+                const habitaciones = await habitacion_service.habitaciones({ hotelId });
+                if (!habitaciones || habitaciones.length === 0) {
+                    throw new Error("No se encontraron habitaciones.");
+                }
+
+                return habitaciones.reduce((min, habitacion) => {
+                    return habitacion.precio < min.precio ? habitacion : min;
+                });
+            } catch (error) {
+                throw new Error(`Error al obtener la habitación más barata: ${error.message}`);
+            }
+        },
+
         // Obtener todas las reservas
         reservas: async () => {
             try {
-                return await reserva_service.reservas();
+                return await reserva_service.ObtenerReservas();
             } catch (error) {
                 throw new Error(`Error al obtener reservas: ${error.message}`);
             }
@@ -40,7 +84,51 @@ const resolvers = {
             } catch (error) {
                 throw new Error(`Error al obtener usuarios: ${error.message}`);
             }
-        }
+        },
+
+        // Query para obtener el hotel más popular en base a las estrellas
+        hotelMasPopular: async () => {
+            try {
+                const hoteles = await hotel_service.hoteles();
+                return hoteles.reduce((max, hotel) => hotel.estrellas > max.estrellas ? hotel : max);
+            } catch (error) {
+                throw new Error(`Error al obtener el hotel más popular: ${error.message}`);
+            }
+        },
+
+        // Query para obtener el total de reservas por hotel
+        totalReservasPorHotel: async (_, { hotelId }) => {
+            try {
+                const habitaciones = await habitacion_service.habitaciones({ hotelId });
+                if (!habitaciones || habitaciones.length === 0) {
+                    throw new Error("No se encontraron habitaciones para el hotel con el ID: " + hotelId);
+                }
+
+                const habitacionesIds = habitaciones.map(habitacion => habitacion.id);
+                return await reserva_service.numeroDeReservasRegistradas({ habitacionesIds });
+            } catch (error) {
+                throw new Error(`Error al obtener el total de reservas por hotel: ${error.message}`);
+            }
+        },
+
+        // Query para obtener reservas activas/completadas por usuario
+        reservasPorUsuario: async (_, { usuarioId }) => {
+            try {
+                return await reserva_service.reservasPorUsuario({ usuarioId });
+            } catch (error) {
+                throw new Error(`Error al obtener reservas por usuario: ${error.message}`);
+            }
+        },
+
+        // Query para obtener habitaciones disponibles en un hotel
+        habitacionesDisponibles: async (_, { hotelId }) => {
+            try {
+                const habitaciones = await habitacion_service.habitaciones({ hotelId });
+                return habitaciones.filter(habitacion => habitacion.estado === 'disponible');
+            } catch (error) {
+                throw new Error(`Error al obtener habitaciones disponibles: ${error.message}`);
+            }
+        },
     },
     Mutation: {
         // Crear un nuevo hotel
@@ -50,7 +138,7 @@ const resolvers = {
             }
 
             try {
-                return await hotel_service.crearHotel(nombre, direccion, estrellas);
+                return await hotel_service.crearHotel({ nombre, direccion, estrellas });
             } catch (error) {
                 throw new Error(`Error al crear el hotel: ${error.message}`);
             }
@@ -63,7 +151,7 @@ const resolvers = {
             }
 
             try {
-                return await hotel_service.actualizarHotel(id, nombre, direccion, estrellas);
+                return await hotel_service.actualizarHotel({ id, nombre, direccion, estrellas });
             } catch (error) {
                 throw new Error(`Error al actualizar el hotel: ${error.message}`);
             }
@@ -89,7 +177,7 @@ const resolvers = {
             }
 
             try {
-                return await habitacion_service.crearHabitacion(hotel_id, numero, tipo, precio, estado);
+                return await habitacion_service.crearHabitacion({ hotel_id, numero, tipo, precio, estado });
             } catch (error) {
                 throw new Error(`Error al crear la habitación: ${error.message}`);
             }
@@ -102,7 +190,7 @@ const resolvers = {
             }
 
             try {
-                return await habitacion_service.actualizarHabitacion(id, numero, tipo, precio, estado);
+                return await habitacion_service.actualizarHabitacion({ id, numero, tipo, precio, estado });
             } catch (error) {
                 throw new Error(`Error al actualizar la habitación: ${error.message}`);
             }
@@ -123,13 +211,13 @@ const resolvers = {
 
 
         // Crear una nueva reserva
-        crearReserva: async (_, { habitacion_id, cliente_id, fecha_entrada, fecha_salida }) => {
-            if (!habitacion_id || !cliente_id || !fecha_entrada || !fecha_salida) {
+        crearReserva: async (_, { habitacionId, usuarioId, fecha_entrada, fecha_salida }) => {
+            if (!habitacionId || !usuarioId || !fecha_entrada || !fecha_salida) {
                 throw new Error("Todos los campos son requeridos para crear una reserva.");
             }
 
             try {
-                return await reserva_service.crearReserva(habitacion_id, cliente_id, fecha_entrada, fecha_salida);
+                return await reserva_service.crearReserva({ habitacionId, usuarioId, fecha_entrada, fecha_salida });
             } catch (error) {
                 throw new Error(`Error al crear la reserva: ${error.message}`);
             }
@@ -142,7 +230,7 @@ const resolvers = {
             }
 
             try {
-                return await reserva_service.actualizarReserva(id, habitacion_id, cliente_id, fecha_entrada, fecha_salida, estado);
+                return await reserva_service.actualizarReserva({ id, habitacion_id, cliente_id, fecha_entrada, fecha_salida, estado });
             } catch (error) {
                 throw new Error(`Error al actualizar la reserva: ${error.message}`);
             }
@@ -162,26 +250,26 @@ const resolvers = {
         },
 
         // Crear un nuevo usuario
-        crearUsuario: async (_, { nombre, email, password }) => {
-            if (!nombre || !email || !password) {
-                throw new Error("Los campos nombre, email y password son requeridos.");
+        crearUsuario: async (_, { nombre, apellido, email, telefono, password, rol }) => {
+            if (!nombre || !apellido || !email || !telefono || !password || !rol) {
+                throw new Error("Los campos nombre, apellido, email, telefono, password y rol son requeridos.");
             }
 
             try {
-                return await usuario_service.crearUsuario(nombre, email, password);
+                return await usuario_service.crearUsuario({ nombre, apellido, email, telefono, password, rol });
             } catch (error) {
                 throw new Error(`Error al crear el usuario: ${error.message}`);
             }
         },
 
         // Actualizar un usuario existente
-        actualizarUsuario: async (_, { id, nombre, email, password }) => {
+        actualizarUsuario: async (_, { id, nombre, apellido, email, telefono, password, rol }) => {
             if (!id || !nombre || !email) {
                 throw new Error("Los campos ID, nombre y email son requeridos.");
             }
 
             try {
-                return await usuario_service.actualizarUsuario(id, nombre, email, password);
+                return await usuario_service.actualizarUsuario({ id, nombre, apellido, email, telefono, password, rol });
             } catch (error) {
                 throw new Error(`Error al actualizar el usuario: ${error.message}`);
             }
@@ -198,8 +286,7 @@ const resolvers = {
             } catch (error) {
                 throw new Error(`Error al eliminar el usuario: ${error.message}`);
             }
-        }
-
+        },
     }
 };
 

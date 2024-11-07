@@ -14,7 +14,7 @@ export const login = async (email, password) => {
 // Función para registrar una cuenta
 export const register = async (nombre, email, password) => {
     try {
-        const response = await apiRest.post('/register', { nombre, email, password });
+        const response = await apiRest.post('/registro', { nombre, email, password });
         return response.data;
     } catch (error) {
         console.error('Error al registrar la cuenta:', error);
