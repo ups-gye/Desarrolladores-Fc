@@ -1,7 +1,6 @@
 // graphqlQueries.js
 import { gql } from '@apollo/client';
 import client from '../utils/graphql.client';
-
 // Consulta para obtener el listado de hoteles
 export const GET_HOTELES = gql`
     query GetHoteles {
@@ -101,6 +100,40 @@ export const getHabitaciones = async (hotelId) => {
         throw error;
     }
 };
+//crrar habitacion
+export const CREATE_HABITACION = gql`
+mutation CrearHabitacion($numero: String!, $tipo: String!, $precio: Float!, $estado: String!, $hotel_id: Int!) {
+  crearHabitacion(numero: $numero, tipo: $tipo, precio: $precio, estado: $estado, hotel_id: $hotel_id) {
+    id
+    numero
+    tipo
+    precio
+    estado
+  }
+}
+`;
+
+export const createHabitacion = async (habitacionData) => {
+    try {
+        const habitacion = {
+            hotel_id: parseInt(habitacionData.hotel_id),
+            numero: habitacionData.numero.toString(),
+            tipo: habitacionData.tipo,
+            precio: parseFloat(habitacionData.precio),
+            estado: habitacionData.estado
+        };
+        console.log('Habitacion:', habitacion);
+        const { data } = await client.mutate({
+            mutation: CREATE_HABITACION,
+            variables: habitacion,
+        });
+        return data.crearHabitacion;
+    } catch (error) {
+        console.error('Error al crear habitacion:', error);
+        throw error;
+    }
+}
+
 // Ejemplo de consulta
 export const GET_RESERVAS = gql`
     query Reservas {
@@ -142,31 +175,80 @@ export const getReservas = async () => {
     }
 };
 
-// Ejemplo de mutación
-export const CREATE_RESERVA = gql`
-    mutation CreateReserva($nombre: String!, $fecha: String!, $habitacion: Int!) {
-    createReserva(nombre: $nombre, fecha: $fecha, habitacion: $habitacion) {
-        id
-        nombre
-        fecha
-        habitacion
+export const GET_RESERVAS_BY_USER = gql`
+query ReservasPorUsuario($usuarioId: Int!) {
+  reservasPorUsuario(usuarioId: $usuarioId) {
+    id
+    fecha_entrada
+    fecha_salida
+    estado
+    Usuario {
+      id
+      nombre
+      apellido
+      email
+      telefono
+      password
+      rol
+    }
+    Habitacion {
+      id
+      numero
+      tipo
+      precio
+      estado
+    }
+  }
+}
+`;
+
+export const getReservasByUser = async (userId) => {
+    try {
+        const { data } = await client.query({
+            query: GET_RESERVAS_BY_USER,
+            variables: { usuarioId: userId },
+        });
+        console.log('Data:', data);
+        return data.reservasPorUsuario;
+    } catch (error) {
+        console.error('Error al obtener reservas por usuario:', error);
+        throw error;
     }
 }
+
+export const CREATE_RESERVA = gql`
+        mutation CrearReserva($habitacionId: Int!, $usuarioId: Int!, $fechaEntrada: String!, $fechaSalida: String!) {
+        crearReserva(habitacionId: $habitacionId, usuarioId: $usuarioId, fecha_entrada: $fechaEntrada, fecha_salida: $fechaSalida) {
+            Habitacion {
+            id
+            numero
+            tipo
+            precio
+            estado
+            }
+        }
+        }
 `;
 
 export const createReserva = async (reservaData) => {
     try {
+        const reserva = {
+            habitacionId: parseInt(reservaData.habitacionId),
+            usuarioId: reservaData.usuarioId,
+            fechaEntrada: reservaData.fecha_entrada,
+            fechaSalida: reservaData.fecha_salida
+        };
+        console.log('Reserva:', reserva);
         const { data } = await client.mutate({
             mutation: CREATE_RESERVA,
-            variables: reservaData,
+            variables: reserva,
         });
-        return data.createReserva;
+        return data.crearReserva;
     } catch (error) {
         console.error('Error al crear reserva:', error);
         throw error;
     }
 };
-
 
 
 

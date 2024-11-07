@@ -12,7 +12,9 @@ const habitacion_service = {
         }
     },
 
-    crearHabitacion: async ({ hotelId, numero, tipo, precio, estado }) => {
+    crearHabitacion: async ({ hotel_id, numero, tipo, precio, estado }) => {
+        console.log('hotelId:', hotel_id);
+        const hotelId = hotel_id;
         try {
             const habitacion = await Habitacion.create({
                 hotelId,

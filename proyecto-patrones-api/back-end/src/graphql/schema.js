@@ -61,7 +61,7 @@ const schema = buildSchema(`
         crearHotel(nombre: String!, direccion: String!, estrellas: Int!): Hotel
         actualizarHotel(id: Int!, nombre: String, direccion: String, estrellas: Int): Hotel
         eliminarHotel(id: Int!): Hotel
-        crearHabitacion(numero: String!, tipo: String!, precio: Float!, estado: String!, hotelId: Int!): Habitacion
+        crearHabitacion(numero: String!, tipo: String!, precio: Float!, estado: String!, hotel_id: Int!): Habitacion
         actualizarHabitacion(id: Int!, numero: String, tipo: String, precio: Float, estado: String): Habitacion
         eliminarHabitacion(id: Int!): Habitacion
         crearUsuario(nombre: String!, apellido: String!, email: String!, telefono: String!, password: String!, rol: String!): Usuario

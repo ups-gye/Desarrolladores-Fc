@@ -1,20 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { getHabitaciones, createHabitacion } from '../../query/graphql.query'; // Asegúrate de que la ruta sea correcta
+// import { useParams } from 'react-router-dom';
+import { getHabitaciones, createReserva } from '../../query/graphql.query'; // Asegúrate de que la ruta sea correcta
 import ErrorMessage from '../../components/error.message';
 import Modal from '../../components/Modal';
-import { defaultPrice, TIPOS_HABITACION } from '../../utils/statics';
+import { useAuth } from '../../AuthContext';
 
-const Habitaciones = () => {
+const HabitacionList = () => {
+    // const { hotelId } = useParams();
+    const hotelId = 1;
+    const { user } = useAuth();
     const [habitaciones, setHabitaciones] = useState([]);
-    const [habitacion, setHabitacion] = useState({ numero: '', precio: 0, tipo: '' });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const [reserva, setReserva] = useState({ habitacionId: 0, fecha_entrada: '', fecha_salida: '', numero: '', estado: 'confirmada' });
+    const today = new Date().toISOString().split('T')[0];
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+    useEffect(() => {
+        setReserva({ ...reserva, fecha_entrada: today, fecha_salida: tomorrowStr });
+    }, []);
+
     const fetchHabitaciones = async () => {
+        setLoading(true);
         try {
-            const data = await getHabitaciones(1);
-            setHabitaciones(data);
+            const data = await getHabitaciones(parseInt(hotelId));
+            const habitacionesDisponibles = data.filter(habitacion => habitacion.estado === 'disponible');
+            setHabitaciones(habitacionesDisponibles);
         } catch (error) {
             setError(error);
         } finally {
@@ -23,14 +38,39 @@ const Habitaciones = () => {
     };
 
     useEffect(() => {
-        fetchHabitaciones();
-    }, [setHabitacion]);
+        if (typeof hotelId !== 'undefined') {
+            fetchHabitaciones();
+        }
+    }, [hotelId]);
 
-    const handleReservar = (id) => {
-        const nuevasHabitaciones = habitaciones.map((hab) =>
-            hab.id === id ? { ...hab, estado: 'reservado' } : hab
-        );
-        setHabitaciones(nuevasHabitaciones);
+    const handleOpenModal = (id, numero) => {
+        setReserva({ ...reserva, habitacionId: id, numero: numero });
+        setIsModalOpen(true);
+    };
+    const handleCloseModal = () => setIsModalOpen(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!reserva.habitacionId || !reserva.fecha_entrada || !reserva.fecha_salida) {
+            alert('Por favor completa los campos obligatorios');
+            return;
+        }
+        reserva.usuarioId = user.id;
+        try {
+            await createReserva(reserva);
+            const nuevasHabitaciones = habitaciones.map((hab) =>
+                hab.id === reserva.habitacionId ? { ...hab, estado: 'reservado' } : hab
+            );
+            var habitacionesactualizadas = nuevasHabitaciones.filter(habitacion => habitacion.estado === 'disponible');
+            setHabitaciones(habitacionesactualizadas);
+        } catch (error) {
+            console.error('Error al crear la reserva:', error);
+        }
+        handleCloseModal();
+    };
+
+    const handleChange = (e) => {
+        setReserva({ ...reserva, [e.target.name]: e.target.value });
     };
 
     const handleCancelarReserva = (id) => {
@@ -40,58 +80,17 @@ const Habitaciones = () => {
         setHabitaciones(nuevasHabitaciones);
     };
 
-    const handleOpenModal = () => {
-        const ultimoNumero = habitaciones.length > 0 ? Math.max(...habitaciones.map(hab => hab.numero)) : 0;
-        setHabitacion({ numero: ultimoNumero + 1, precio: defaultPrice, tipo: '' });
-        setIsModalOpen(true);
-    }
-    const handleCloseModal = () => setIsModalOpen(false);
-
-    const handleAgregarHabitacion = async (e) => {
-        console.log('habitacion:', habitacion);
-        e.preventDefault();
-        if (!habitacion.numero || !habitacion.precio || !habitacion.tipo) {
-            alert('Por favor completa los campos obligatorios');
-            return;
-        }
-        habitacion.hotel_id = 1;
-        habitacion.estado = 'disponible';
-        try {
-            await createHabitacion(habitacion);
-            fetchHabitaciones(); // Vuelve a cargar las habitaciones después de crear una nueva
-            setHabitaciones([...habitaciones, habitacion]);
-        } catch (error) {
-            console.error('Error al crear la reserva:', error);
-        }
-        console.log('Datos actualizados:', habitacion); // Aquí agregarías la lógica de actualización real
-        handleCloseModal();
-    };
-    const handleChange = (e) => {
-        setHabitacion({ ...habitacion, [e.target.name]: e.target.value });
-    };
-
     if (loading) return <div>Cargando...</div>;
-
     if (error) return <ErrorMessage message={error.message} />;
 
     return (
-        <div className="py-10 min-h-screen">
+        <div className="py-10 bg-gray-50 ">
             <div className="max-w-7xl mx-auto px-6">
                 <h1 className="text-3xl font-extrabold text-gray-800 mb-8 text-center">
                     Listado de Habitaciones
                 </h1>
                 {habitaciones.length > 0 ? (
                     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {/* Nuevo Card para Agregar Habitación */}
-                        <li
-                            className="relative border border-dashed border-gray-300 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 bg-white flex items-center justify-center cursor-pointer"
-                            onClick={handleOpenModal}
-                        >
-                            <div className="p-6 text-center">
-                                <div className="text-gray-400 text-5xl mb-2">+</div>
-                                <p className="text-sm font-medium text-gray-500">Agregar Nueva Habitación</p>
-                            </div>
-                        </li>
                         {habitaciones.map((habitacion) => (
                             <li
                                 key={habitacion.id}
@@ -119,7 +118,7 @@ const Habitaciones = () => {
 
                                 {habitacion.estado === 'disponible' ? (
                                     <button
-                                        onClick={() => handleReservar(habitacion.id)}
+                                        onClick={() => handleOpenModal(habitacion.id, habitacion.numero)}
                                         className="w-full bg-blue-500 text-white py-2 mt-auto hover:bg-blue-600 transition-colors"
                                     >
                                         Reservar
@@ -147,43 +146,29 @@ const Habitaciones = () => {
                     </p>
                 )}
             </div>
-            <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="Agregar">
-                <form onSubmit={handleAgregarHabitacion} className="space-y-4">
+
+            <Modal isOpen={isModalOpen} onClose={handleCloseModal} title={"Reservar Habitación Nro." + reserva.numero}>
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium">Numero</label>
+                        <label className="block text-sm font-medium">Fecha De Inicio</label>
                         <input
-                            type="text"
-                            name="numero"
-                            value={habitacion.numero || ''}
+                            type="date"
+                            name="fecha_entrada"
+                            value={reserva.fecha_entrada || ''}
                             onChange={handleChange}
                             className="w-full border rounded px-3 py-2 mt-1"
                         />
                     </div>
+
                     <div>
-                        <label className="block text-sm font-medium">Precio</label>
+                        <label className="block text-sm font-medium">Fecha de salida</label>
                         <input
-                            type="text"
-                            name="precio"
-                            value={habitacion.precio || 0}
+                            type="date"
+                            name="fecha_salida"
+                            value={reserva.fecha_salida || ''}
                             onChange={handleChange}
                             className="w-full border rounded px-3 py-2 mt-1"
                         />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium">Tipo</label>
-                        <select
-                            name="tipo"
-                            value={habitacion.tipo || ''}
-                            onChange={handleChange}
-                            className="w-full border rounded px-3 py-2 mt-1"
-                        >
-                            <option value="">Seleccione un tipo</option>
-                            {Object.values(TIPOS_HABITACION).map((tipo) => (
-                                <option key={tipo} value={tipo}>
-                                    {tipo}
-                                </option>
-                            ))}
-                        </select>
                     </div>
 
                     <div className="flex justify-end space-x-2">
@@ -207,4 +192,4 @@ const Habitaciones = () => {
     );
 };
 
-export default Habitaciones;
+export default HabitacionList;

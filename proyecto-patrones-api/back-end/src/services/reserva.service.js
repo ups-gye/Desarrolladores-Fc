@@ -20,6 +20,10 @@ const reserva_service = {
         try {
             const reservas = await Reserva.findAll({
                 where: { usuarioId: usuarioId },
+                include: [
+                    { model: Habitacion, as: 'Habitacion' },
+                    { model: Usuario, as: 'Usuario' }
+                ]
             });
             return reservas;
         } catch (error) {
@@ -52,6 +56,11 @@ const reserva_service = {
                 fecha_salida,
                 estado: 'confirmada',
             });
+
+            const habitacion = await Habitacion.findByPk(habitacionId);
+            if (!habitacion) throw new Error('Habitacion no encontrada');
+
+            await habitacion.update({ estado: 'reservada' });
             return reserva;
         } catch (error) {
             throw new Error('Error al crear la reserva: ' + error.message);

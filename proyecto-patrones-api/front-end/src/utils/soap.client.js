@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-
 const apiRest = axios.create({
     baseURL: process.env.REACT_APP_API_SOAP_URL,
-    withCredentials: true, // Habilitar el envío de cookiess
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/xml',
     },
 });
+
+// Función para convertir nodos XML a JSON
 const xmlNodeToJson = (node) => {
     const obj = {};
     if (node.nodeType === 1) { // Elemento
@@ -16,7 +17,15 @@ const xmlNodeToJson = (node) => {
                 const item = node.childNodes.item(i);
                 if (item.nodeType === 1) { // Solo procesamos elementos
                     const nodeName = item.nodeName.replace("tns:", "");
-                    obj[nodeName] = xmlNodeToJson(item);
+                    if (obj[nodeName]) {
+                        // Si el nombre del nodo ya existe, conviértelo en un array
+                        if (!Array.isArray(obj[nodeName])) {
+                            obj[nodeName] = [obj[nodeName]];
+                        }
+                        obj[nodeName].push(xmlNodeToJson(item));
+                    } else {
+                        obj[nodeName] = xmlNodeToJson(item);
+                    }
                 } else if (item.nodeType === 3 && item.nodeValue.trim()) { // Text node
                     return item.nodeValue.trim();
                 }
@@ -26,6 +35,7 @@ const xmlNodeToJson = (node) => {
     return obj;
 };
 
+// Función principal para realizar la solicitud SOAP
 export const soapClient = async (soapAction, soapBody) => {
     const soapEnvelope = `
         <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:res="http://www.example.com/reservas">
@@ -38,20 +48,14 @@ export const soapClient = async (soapAction, soapBody) => {
 
     try {
         const response = await apiRest.post('/reservas', soapEnvelope);
-        // Analizar el XML y extraer <tns:ObtenerReservasResponse>
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(response.data, "application/xml");
 
-        // Obtener el contenido de <tns:ObtenerReservasResponse>
-        const responseNode = xmlDoc.getElementsByTagName("tns:reservas")[0];
+        // Obtener todos los nodos <tns:reservas>
+        const reservasNodes = xmlDoc.getElementsByTagName("tns:reservas");
 
-        // Convertir XML a JSON
-        const jsonResponse = xmlNodeToJson(responseNode);
-
-        // Formatear el JSON como un arreglo de objetos
-        const reservasArray = Array.isArray(jsonResponse.reservas)
-            ? jsonResponse.reservas
-            : [jsonResponse.reservas];
+        // Convertir cada nodo de reservas en un objeto JSON y almacenarlos en un array
+        const reservasArray = Array.from(reservasNodes).map(node => xmlNodeToJson(node));
 
         return reservasArray;
     } catch (error) {

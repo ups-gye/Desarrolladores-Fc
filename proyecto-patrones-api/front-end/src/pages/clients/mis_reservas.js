@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import Table, { SelectColumnFilter, StatusPill } from "../../components/Table";
-import { getReservas } from '../../query/soap.query';
-
-export default function Reservas() {
+import { getReservasByUser } from '../../query/graphql.query';
+import { useAuth } from '../../AuthContext';
+export default function MisReservas() {
     const [reservas, setReservas] = useState([]);
-    const editable = false;
+    const { user } = useAuth();
+    const editable = true;
     const onNewClick = () => {
         console.log("Nuevo");
         // setTitleModal("Nuevo Miembro");
@@ -27,9 +28,8 @@ export default function Reservas() {
     };
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getReservas();
-            console.log(response[0].reservas);
-            const reservas = response[0].reservas.map((reserva) => {
+            const response = await getReservasByUser(user.id);
+            const reservas = response.map((reserva) => {
                 return {
                     id: reserva.id,
                     email: reserva.Usuario.email,
@@ -88,31 +88,31 @@ export default function Reservas() {
                 Filter: SelectColumnFilter,
                 filter: "includes",
             },
-            {
-                Header: "Acción",
-                accessor: "action",
-                Cell: ({ row }) => {
-                    if (!editable) {
-                        return (<a className="text-sm" href={`/miembros/${row.original.cedula}`}>
-                            DETALLES
-                        </a>);
-                    }
-                    if (row.original.estaActivo === -2) {
-                        return (
-                            <a className="text-sm" href={`/admin/pagos/plan/${row.original.secuencial}`}>
-                                PAGAR
-                            </a>
-                        );
-                    } else {
-                        return (
-                            <a className="text-sm" onClick={() => handleModificarClick(row.original)}>
-                                MODIFICAR
-                            </a>
-                        );
-                    }
+            // {
+            //     Header: "Acción",
+            //     accessor: "action",
+            //     Cell: ({ row }) => {
+            //         if (!editable) {
+            //             return (<a className="text-sm" href={`/miembros/${row.original.cedula}`}>
+            //                 DETALLES
+            //             </a>);
+            //         }
+            //         if (row.original.estaActivo === -2) {
+            //             return (
+            //                 <a className="text-sm" href={`/admin/pagos/plan/${row.original.secuencial}`}>
+            //                     PAGAR
+            //                 </a>
+            //             );
+            //         } else {
+            //             return (
+            //                 <a className="text-sm" onClick={() => handleModificarClick(row.original)}>
+            //                     MODIFICAR
+            //                 </a>
+            //             );
+            //         }
 
-                }
-            }
+            //     }
+            // }
         ];
         return headers.filter((item) => item !== null);
     }, []);
